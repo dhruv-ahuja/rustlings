@@ -35,11 +35,26 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         let team_1_score: u8 = v[2].parse().unwrap();
         let team_2_name = v[1].to_string();
         let team_2_score: u8 = v[3].parse().unwrap();
+
         // TODO: Populate the scores table with details extracted from the
         // current line. Keep in mind that goals scored by team_1
         // will be the number of goals conceded from team_2, and similarly
         // goals scored by team_2 will be the number of goals conceded by
         // team_1.
+        // * we have to reuse the Team structs across the loop
+        let mut team_one: Team;
+        let mut team_two: Team;
+        if scores.contains_key(&team_1_name) {
+            team_one = scores.key(&team_1_name);
+            team_one.goals_scored += team_1_score;
+            team_one.goals_conceded += team_2_score;
+        } else {
+            team_one = Team {
+                name: team_1_name,
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            }
+        }
     }
     scores
 }
